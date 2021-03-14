@@ -11,6 +11,7 @@ export class Ejercicio2Component implements OnInit {
   claveIngresada:string = '';
   mensajeIngresado:string ='';
   mensajeCifrado:string='';
+  mensajeDescifrado:string='';
   bloquearLetras:boolean = false;
   claveMensaje:boolean = true;
   constructor() { }
@@ -121,7 +122,7 @@ export class Ejercicio2Component implements OnInit {
     for (let i = 0; i < posConLLaves.length; i++) {
       if(posConLLaves[i] > 25){
         let valor:number = posConLLaves[i];
-        let nuevoValor:number = Math.abs(valor - 25);
+        let nuevoValor:number = Math.abs(valor - 26);
         posConLLaves[i] = nuevoValor;
       }
     }
@@ -135,6 +136,44 @@ export class Ejercicio2Component implements OnInit {
       mensajeC = mensajeC + resCodificada[i];
     }
     this.mensajeCifrado = mensajeC;
+  }
+
+  decodificar():void{
+    let vecLlave:string[]=this.claveIngresada.toString().split(',');
+    let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
+    let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
+    //Generamos el mensaje cifrado
+    //obtenemos las posiciones de las letras en el abecedario
+    let posicionesL:number[] =[];
+    for (let i = 0; i < mensajeVec.length; i++) {
+      for (let j = 0; j < this.l.length; j++) {
+        if(mensajeVec[i] === this.l[j]){
+          posicionesL.push(j);
+        }
+      }
+    }
+    let posConLLaves:number[] = [];
+    for (let i = 0; i < posicionesL.length; i++) {
+      posConLLaves[i] = posicionesL[i] - vecLlaveRes[i];
+    }
+    //Comprobamos que los resultados tengan un valor logico es decir menor a 26
+    for (let i = 0; i < posConLLaves.length; i++) {
+      if(posConLLaves[i] < 0){
+        let valor:number = posConLLaves[i];
+        let nuevoValor:number = Math.abs(valor + 26);
+        posConLLaves[i] = nuevoValor;
+      }
+    }
+    //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
+    let resCodificada:string[] = [];
+    for (let i = 0; i < mensajeVec.length; i++) {
+      resCodificada[i] = this.abecedario[posConLLaves[i]];
+    }
+    let mensajeC:string = '';
+    for (let i = 0; i < resCodificada.length; i++) {
+      mensajeC = mensajeC + resCodificada[i];
+    }
+    this.mensajeDescifrado = mensajeC;
   }
 
   generarVectorLlaveLetras(vecLlave:string[], vecMensaje:string[]):number[]{
