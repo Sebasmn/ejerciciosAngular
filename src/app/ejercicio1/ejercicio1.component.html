@@ -96,7 +96,7 @@
         <div class="col-sm-4">
         </div>  
         <div class="col-md-4">
-          <input placeholder="Ingrese mensaje" class="form-control" maxlength="50" [disabled]="claveMensaje" [(ngModel)]="mensajeIngresado"> 
+          <input placeholder="Ingrese mensaje" class="form-control" maxlength="50" [disabled]="claveMensaje" [(ngModel)]="mensajeIngresado" onKeypress="if ((event.keyCode < 65 || event.keyCode > 90)) event.returnValue = false;"> 
         </div>
         <div class="col-sm-4">
         </div> 
