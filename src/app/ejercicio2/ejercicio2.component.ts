@@ -23,8 +23,6 @@ export class Ejercicio2Component implements OnInit {
   letrasAleatorias():void{
     this.bloquearLetras = false;
     this.claveMensaje = true;
-    this.claveIngresada = '';
-    this.mensajeIngresado = '';
     let abecedarioDesordenado:string[] = [];
     let vecNumRan:number[] = [];
     let i:number = 0;
@@ -75,6 +73,7 @@ export class Ejercicio2Component implements OnInit {
         alert("No puede ingresar letras repetidas, total de letras repetidas: " + " " + lRepetidas);
         this.claveMensaje = true;
       }else{
+        alert("Correcto");
         this.bloquearLetras = true;
         this.claveMensaje = false;
       }
@@ -122,13 +121,12 @@ export class Ejercicio2Component implements OnInit {
     for (let i = 0; i < posConLLaves.length; i++) {
       if(posConLLaves[i] > 25){
         let valor:number = posConLLaves[i];
-        let nuevoValor:number = Math.abs(valor - 26);
+        let nuevoValor:number = Math.abs(valor - 25);
         posConLLaves[i] = nuevoValor;
       }
     }
     //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
     let resCodificada:string[] = [];
-    
     for (let i = 0; i < mensajeVec.length; i++) {
       resCodificada[i] = this.l[posConLLaves[i]];
     }
@@ -136,7 +134,6 @@ export class Ejercicio2Component implements OnInit {
     for (let i = 0; i < resCodificada.length; i++) {
       mensajeC = mensajeC + resCodificada[i];
     }
-    alert(mensajeC);
     this.mensajeCifrado = mensajeC;
   }
 
