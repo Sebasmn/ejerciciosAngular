@@ -12,162 +12,222 @@ export class Ejercicio1Component implements OnInit {
   ngOnInit(): void {
   }
 
-   //obtenemos el numerador y denominador
-   numerador!:number;
-   denominador!:number;
-   dividir():void {
-     //transformamos en vectores el n y d
-   let vecNum!:string[];
-   let vecDen!:string[];
-   let vecAux:string[] = [];
-     // asignamos ambos valores al vector
-     vecNum = this.numerador.toString().split('');
-     vecDen = this.denominador.toString().split('');
-     
-     if(this.numerador !== this.denominador){
-       if(vecNum.length > vecDen.length){
-         console.log('n > d');
-         let fin:boolean = true;
-         let i:number = 0;
-         let vecAux:string[] = [];
-         let vecSobrante:string[] = [];
-         let vecNumRes:number[] = []; //almacenan las respuestas del num imprimir en el textarea
-         let vecResDen:number[] = []; //almacenan las respuestas del den imprimir en el textarea
-         let vecCadena:string;
-         let numCadena:number;
-         let ultimoRes:number;
-         if(this.numerador%this.denominador === 0){
-           let respuDe:number = this.numerador / this.denominador;
-           vecResDen.push(respuDe);
-           vecNumRes.push(0);
-           fin=false;
-           //Impresion para verificar
-           for (let i = 0; i < vecNumRes.length; i++) {
-             console.log(vecNumRes[i]);
-             console.log(vecResDen[i]);
-           }
-         }
-         while(fin === true){
-           if(i === 0){
-             for (let k = 0; k < vecDen.length; k++) {
-               vecAux.push(vecNum[k]);
-             }
-             for (let l = vecDen.length; l < vecNum.length; l++) {
-               vecSobrante.push(vecNum[l]);
-             }
-             //Convertimos a cadena el nuevo numerador
-             vecCadena = this.convertirVectorCadena(vecAux);
-             numCadena = +vecCadena;
-             let comMul:number;
-             if(numCadena > this.denominador){
-               let cont:number = 0;
-               let numAux:number = 0;
-               let vecRes:number[] = [];
-               for (let i = 1; i < 100; i++) {
-                 comMul = this.denominador * i;  
-                 if(comMul < numCadena){
-                   vecRes.push(comMul);
-                 }        
-                 if(comMul > numCadena) {
-                   numAux = i - 1;
-                   vecResDen.push(numAux);
-                   break;
-                 } 
-                 cont++;
-               }
-               let resultadoResta:number =  Math.abs(numCadena - vecRes[numAux-1]);
-               vecNumRes.push(resultadoResta);
-               ultimoRes = resultadoResta;
-                for (let i = 0; i < vecNumRes.length; i++) {
-                  console.log('Respuesta numerador: ' + vecNumRes);
-                  console.log('Respuesta denominador: ' + vecResDen);
-                }
-               // console.log(ultimoRes);
-             }
-             if(numCadena < this.denominador)
-             {              
-               console.log('entro aqui');
-               let primerNSo:string = vecSobrante[0];
-               let nCadena:string = numCadena + primerNSo;
-               let nCadenaNumero:number = +nCadena;
-               let vecAuxSobrante:string[] =[];
-               for (let i = 1; i < vecSobrante.length; i++) {
-                 vecAuxSobrante.push(vecSobrante[i]);
-               }
-               vecSobrante = vecAuxSobrante;
-               let numAux:number = 0;
-               let vecRes:number[] = [];
-               let igual:boolean = false;
-               for (let i = 1; i < 100; i++) {
-                 comMul = this.denominador * i;  
-                 if(comMul === nCadenaNumero){
-                   igual = true;
-                 }
-                 if(comMul < nCadenaNumero){
-                   vecRes.push(comMul);
-                 }        
-                 if(comMul > nCadenaNumero) {
-                   numAux = i - 1;
-                   vecResDen.push(numAux);
-                   break;
-                 } 
-               }
-               if(igual === true){
-                 console.log('Es igual entra aqui');
-                 let resultadoResta:number =  0;
-                 vecNumRes.push(resultadoResta);
-                 ultimoRes = resultadoResta;
-                 //Impresion para verificar
-                 for (let i = 0; i < vecNumRes.length; i++) {
-                   console.log(vecNumRes[i]);
-                   console.log(vecResDen[i]);
-                 }
-                 console.log(resultadoResta + ' ' + ultimoRes);
-               }else{
-                 let resultadoResta:number =  Math.abs(nCadenaNumero - vecRes[numAux-1]);
-                 vecNumRes.push(resultadoResta);
-                 ultimoRes = resultadoResta;
-                 //Impresion para verificar
-                 for (let i = 0; i < vecNumRes.length; i++) {
-                   console.log(vecNumRes[i]);
-                   console.log(vecResDen[i]);
-                 }
-                 console.log(resultadoResta + ' ' + ultimoRes);
-               }
-              
-                
-             }
-             if(numCadena === this.denominador){
-               vecResDen.push(1);
-               vecNumRes.push(0);
-             }
-           }
-           if(i > 0){
-             //aqui me quede
-             fin = false;
-           }
-           i++;
-         }
-       } 
-       if(vecNum.length < vecDen.length){
-         console.log('n < d');
-       }
-     }else{
-       console.log('El resultado es 1');
-     }
-    
-   }
- 
-   convertirVectorCadena(vecAux:string[]):string{
-     let cadenaNum:string = '';
-     for (let index = 0; index < vecAux.length; index++) {
-       if(index === 0){
-         cadenaNum = vecAux[0];
-       }else{
-         cadenaNum = cadenaNum + vecAux[index];
-       }
-     }
-     return cadenaNum;
-   }
    
+  l:string[] = [];
+  claveIngresada:string = '';
+  mensajeIngresado:string ='';
+  mensajeCifrado:string='';
+  mensajeDescifrado:string='';
+  bloquearLetras:boolean = false;
+  claveMensaje:boolean = true;
+  botonesCD:boolean = true;
+  btnComprobar:boolean = true;
+  btnEscoger:boolean = true;
+
+  
+
+  abecedario:string[] = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    
+  limpiar(){
+    this.claveIngresada = '';
+    this.mensajeIngresado='';
+    this.mensajeCifrado='';
+    this.mensajeDescifrado='';
+  }
+
+  letrasAleatorias():void{
+    this.limpiar();
+    this.bloquearLetras = false;
+    this.claveMensaje = true;
+    this.btnEscoger = true;
+    this.btnComprobar = false;
+    this.botonesCD = true;
+    let abecedarioDesordenado:string[] = [];
+    let vecNumRan:number[] = [];
+    let i:number = 0;
+    while(i < 26){
+      let nAleatorio:number = Math.ceil(Math.random()*26);
+      let exis:boolean = false;
+        if(i === 0){
+          vecNumRan.push(nAleatorio);
+          i = i + 1;
+        }else{
+          for (let i = 0; i < vecNumRan.length; i++) {
+            if(nAleatorio === vecNumRan[i]){
+              exis = true;
+              break;
+            }
+          }
+          if(exis === false){
+            vecNumRan.push(nAleatorio);
+            i = i + 1;
+          }
+        }
+    }
+    for (let i = 0; i < vecNumRan.length; i++) {
+      vecNumRan[i] = vecNumRan[i] - 1;
+    }
+    for (let i = 0; i < vecNumRan.length; i++) {
+      abecedarioDesordenado.push(this.abecedario[vecNumRan[i]]);
+    }
+    for (let i = 0; i < abecedarioDesordenado.length; i++) {
+      this.l[i] = abecedarioDesordenado[i];
+    }
+  }
+
+  comprobar():void{
+    this.limpiar(); 
+    this.btnEscoger = true;
+    this.botonesCD = true;
+    let vacios:number = 0;
+    let letrasIngresadas:string[] = [this.l[0].toUpperCase(), this.l[1].toUpperCase(), this.l[2].toUpperCase(), this.l[3].toUpperCase(), this.l[4].toUpperCase(), this.l[5].toUpperCase(), this.l[6].toUpperCase(), this.l[7].toUpperCase(), this.l[8].toUpperCase(), this.l[9].toUpperCase(), this.l[10].toUpperCase(), this.l[11].toUpperCase(), this.l[12].toUpperCase(), this.l[13].toUpperCase(), this.l[14].toUpperCase(), this.l[15].toUpperCase(), this.l[16].toUpperCase(), this.l[17].toUpperCase(), this.l[18].toUpperCase(), this.l[19].toUpperCase(), this.l[20].toUpperCase(), this.l[21].toUpperCase(), this.l[22].toUpperCase(), this.l[23].toUpperCase(), this.l[24].toUpperCase(), this.l[25].toUpperCase()];
+    // Calculamos los espacios vacios
+    for (let i = 0; i < letrasIngresadas.length; i++) {
+      if(letrasIngresadas[i]===undefined || letrasIngresadas[i]===''){
+        vacios = vacios + 1;
+      }
+    }
+    if(vacios > 0){
+      alert('Debe ingresar todas las letras del abecedario...');
+    }else{
+      let lRepetidas:number = this.verificarRepeticion(letrasIngresadas);
+      if(lRepetidas > 0){
+        alert("No puede ingresar letras repetidas, total de letras repetidas: " + " " + lRepetidas);
+        this.claveMensaje = true;
+      }else{
+        this.bloquearLetras = true;
+        this.claveMensaje = false;
+        this.botonesCD = false;
+        this.btnComprobar = true;
+      }
+    }
+  }
+
+  verificarRepeticion(letrasIngresadas:string[]):number{
+    let cont:number = 0;
+    let repetidas:boolean = false;
+    
+    let aux:string;
+    for (let i = 0; i < letrasIngresadas.length; i++) {
+      aux = letrasIngresadas[i];
+      for (let j = i + 1; j < letrasIngresadas.length; j++) {
+        if(letrasIngresadas[j] === aux){
+          cont = cont + 1;
+        }
+      }
+    }
+    if(cont > 0){
+      repetidas = true;
+    }
+    return cont;
+  }
+
+  codificar():void{
+    if(this.claveIngresada===undefined || this.claveIngresada === '' || this.mensajeIngresado === undefined || this.mensajeIngresado === ''){
+      alert('Debes ingresar una clave y un mensaje...');
+    }else{
+      let vecLlave:string[]=this.claveIngresada.toString().split(',');
+      let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
+      let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
+      //Generamos el mensaje cifrado
+      //obtenemos las posiciones de las letras en el abecedario
+      let posicionesL:number[] =[];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        for (let j = 0; j < this.abecedario.length; j++) {
+          if(mensajeVec[i] === this.abecedario[j]){
+            posicionesL.push(j);
+          }
+        }
+      }
+      let posConLLaves:number[] = [];
+      for (let i = 0; i < posicionesL.length; i++) {
+        posConLLaves[i] = posicionesL[i] + vecLlaveRes[i];
+      }
+      //Comprobamos que los resultados tengan un valor logico es decir menor a 26
+      for (let i = 0; i < posConLLaves.length; i++) {
+        if(posConLLaves[i] > 25){
+          let valor:number = posConLLaves[i];
+          let nuevoValor:number = Math.abs(valor - 26);
+          posConLLaves[i] = nuevoValor;
+        }
+      }
+      //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
+      let resCodificada:string[] = [];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        resCodificada[i] = this.l[posConLLaves[i]];
+      }
+      let mensajeC:string = '';
+      for (let i = 0; i < resCodificada.length; i++) {
+        mensajeC = mensajeC + resCodificada[i];
+      }
+      this.mensajeCifrado = mensajeC;
+      this.claveMensaje = true;
+      this.btnEscoger = false;
+      this.botonesCD = true; 
+    }
+  }
+
+  decodificar():void{
+    if(this.claveIngresada===undefined || this.claveIngresada === '' || this.mensajeIngresado === undefined || this.mensajeIngresado === ''){
+      alert('Debes ingresar una clave y un mensaje...');
+    }else{
+      let vecLlave:string[]=this.claveIngresada.toString().split(',');
+      let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
+      let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
+      //Generamos el mensaje cifrado
+      //obtenemos las posiciones de las letras en el abecedario
+      let posicionesL:number[] =[];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        for (let j = 0; j < this.l.length; j++) {
+          if(mensajeVec[i] === this.l[j]){
+            posicionesL.push(j);
+          }
+        }
+      }
+      let posConLLaves:number[] = [];
+      for (let i = 0; i < posicionesL.length; i++) {
+        posConLLaves[i] = posicionesL[i] - vecLlaveRes[i];
+      }
+      //Comprobamos que los resultados tengan un valor logico es decir menor a 26
+      for (let i = 0; i < posConLLaves.length; i++) {
+        if(posConLLaves[i] < 0){
+          let valor:number = posConLLaves[i];
+          let nuevoValor:number = Math.abs(valor + 26);
+          posConLLaves[i] = nuevoValor;
+        }
+      }
+      //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
+      let resCodificada:string[] = [];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        resCodificada[i] = this.abecedario[posConLLaves[i]];
+      }
+      let mensajeC:string = '';
+      for (let i = 0; i < resCodificada.length; i++) {
+        mensajeC = mensajeC + resCodificada[i];
+      }
+      this.mensajeDescifrado = mensajeC;
+      this.claveMensaje = true;
+      this.btnEscoger = false;
+      this.botonesCD = true; 
+    }
+  }
+
+  generarVectorLlaveLetras(vecLlave:string[], vecMensaje:string[]):number[]{
+    let vecResultado:number[] = [];
+    let lon:number = vecLlave.length;
+    let con:number = 0;
+    for (let i = 0; i < vecMensaje.length; i++) {
+      vecResultado.push(Number(vecLlave[con]));
+      if(con === lon-1){
+        con = 0;
+      }else{
+        con++;
+      }
+    }
+    return vecResultado;
+  }
+  escogerN():void{
+    this.claveMensaje = false;
+    this.botonesCD = false;
+  }
 }
