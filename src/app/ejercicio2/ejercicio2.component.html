@@ -74,7 +74,7 @@
             <button class="btn btn-info btn-sm" (click)="letrasAleatorias()">Generar letras aleatorias</button>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-info btn-sm" (click)="comprobar()">Comprobar</button>
+            <button class="btn btn-info btn-sm" (click)="comprobar()" [disabled]="btnComprobar">Comprobar</button>
         </div> 
         <div class="col-md-1">
         </div>
@@ -86,7 +86,7 @@
       <div class="col-sm-4">
       </div>  
       <div class="col-md-4">
-        <input placeholder="Ingrese clave" [readonly]="claveMensaje" class="form-control" maxlength="50" [(ngModel)]="claveIngresada"> 
+        <input placeholder="Ingrese clave" class="form-control" maxlength="50" [disabled]="claveMensaje" [(ngModel)]="claveIngresada"> 
       </div>
       <div class="col-sm-4">
       </div> 
@@ -96,7 +96,7 @@
         <div class="col-sm-4">
         </div>  
         <div class="col-md-4">
-          <input placeholder="Ingrese mensaje" [readonly]="claveMensaje" class="form-control" maxlength="50" [(ngModel)]="mensajeIngresado"> 
+          <input placeholder="Ingrese mensaje" class="form-control" maxlength="50" [disabled]="claveMensaje" [(ngModel)]="mensajeIngresado"> 
         </div>
         <div class="col-sm-4">
         </div> 
@@ -108,10 +108,10 @@
         <div class="col-md-1">
         </div>
         <div class="col-md-1">
-            <button class="btn btn-info btn-sm" (click)="codificar()">Codificar</button>
+            <button class="btn btn-info btn-sm" (click)="codificar()" [disabled]="botonesCD">Codificar</button>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-info btn-sm" (click)="decodificar()">Decodificar</button>
+            <button class="btn btn-info btn-sm" (click)="decodificar()" [disabled]="botonesCD">Decodificar</button>
         </div> 
         <div class="col-md-1">
         </div>
@@ -163,7 +163,7 @@
         <div class="col-md-5">
         </div>  
         <div class="col-md-3">
-            <button class="btn btn-info btn-sm">Escoger nuevamente</button>
+            <button class="btn btn-info btn-sm" [disabled]="btnEscoger" (click)="escogerN()">Escoger nuevamente</button>
         </div>
         <div class="col-md-4">
         </div>

@@ -14,6 +14,10 @@ export class Ejercicio2Component implements OnInit {
   mensajeDescifrado:string='';
   bloquearLetras:boolean = false;
   claveMensaje:boolean = true;
+  botonesCD:boolean = true;
+  btnComprobar:boolean = true;
+  btnEscoger:boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -21,9 +25,20 @@ export class Ejercicio2Component implements OnInit {
 
   abecedario:string[] = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
     
+  limpiar(){
+    this.claveIngresada = '';
+    this.mensajeIngresado='';
+    this.mensajeCifrado='';
+    this.mensajeDescifrado='';
+  }
+
   letrasAleatorias():void{
+    this.limpiar();
     this.bloquearLetras = false;
     this.claveMensaje = true;
+    this.btnEscoger = true;
+    this.btnComprobar = false;
+    this.botonesCD = true;
     let abecedarioDesordenado:string[] = [];
     let vecNumRan:number[] = [];
     let i:number = 0;
@@ -58,6 +73,9 @@ export class Ejercicio2Component implements OnInit {
   }
 
   comprobar():void{
+    this.limpiar(); 
+    this.btnEscoger = true;
+    this.botonesCD = true;
     let vacios:number = 0;
     let letrasIngresadas:string[] = [this.l[0].toUpperCase(), this.l[1].toUpperCase(), this.l[2].toUpperCase(), this.l[3].toUpperCase(), this.l[4].toUpperCase(), this.l[5].toUpperCase(), this.l[6].toUpperCase(), this.l[7].toUpperCase(), this.l[8].toUpperCase(), this.l[9].toUpperCase(), this.l[10].toUpperCase(), this.l[11].toUpperCase(), this.l[12].toUpperCase(), this.l[13].toUpperCase(), this.l[14].toUpperCase(), this.l[15].toUpperCase(), this.l[16].toUpperCase(), this.l[17].toUpperCase(), this.l[18].toUpperCase(), this.l[19].toUpperCase(), this.l[20].toUpperCase(), this.l[21].toUpperCase(), this.l[22].toUpperCase(), this.l[23].toUpperCase(), this.l[24].toUpperCase(), this.l[25].toUpperCase()];
     // Calculamos los espacios vacios
@@ -74,9 +92,10 @@ export class Ejercicio2Component implements OnInit {
         alert("No puede ingresar letras repetidas, total de letras repetidas: " + " " + lRepetidas);
         this.claveMensaje = true;
       }else{
-        alert("Correcto");
         this.bloquearLetras = true;
         this.claveMensaje = false;
+        this.botonesCD = false;
+        this.btnComprobar = true;
       }
     }
   }
@@ -101,79 +120,93 @@ export class Ejercicio2Component implements OnInit {
   }
 
   codificar():void{
-    let vecLlave:string[]=this.claveIngresada.toString().split(',');
-    let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
-    let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
-    //Generamos el mensaje cifrado
-    //obtenemos las posiciones de las letras en el abecedario
-    let posicionesL:number[] =[];
-    for (let i = 0; i < mensajeVec.length; i++) {
-      for (let j = 0; j < this.abecedario.length; j++) {
-        if(mensajeVec[i] === this.abecedario[j]){
-          posicionesL.push(j);
+    if(this.claveIngresada===undefined || this.claveIngresada === '' || this.mensajeIngresado === undefined || this.mensajeIngresado === ''){
+      alert('Debes ingresar una clave y un mensaje...');
+    }else{
+      let vecLlave:string[]=this.claveIngresada.toString().split(',');
+      let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
+      let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
+      //Generamos el mensaje cifrado
+      //obtenemos las posiciones de las letras en el abecedario
+      let posicionesL:number[] =[];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        for (let j = 0; j < this.abecedario.length; j++) {
+          if(mensajeVec[i] === this.abecedario[j]){
+            posicionesL.push(j);
+          }
         }
       }
-    }
-    let posConLLaves:number[] = [];
-    for (let i = 0; i < posicionesL.length; i++) {
-      posConLLaves[i] = posicionesL[i] + vecLlaveRes[i];
-    }
-    //Comprobamos que los resultados tengan un valor logico es decir menor a 26
-    for (let i = 0; i < posConLLaves.length; i++) {
-      if(posConLLaves[i] > 25){
-        let valor:number = posConLLaves[i];
-        let nuevoValor:number = Math.abs(valor - 26);
-        posConLLaves[i] = nuevoValor;
+      let posConLLaves:number[] = [];
+      for (let i = 0; i < posicionesL.length; i++) {
+        posConLLaves[i] = posicionesL[i] + vecLlaveRes[i];
       }
+      //Comprobamos que los resultados tengan un valor logico es decir menor a 26
+      for (let i = 0; i < posConLLaves.length; i++) {
+        if(posConLLaves[i] > 25){
+          let valor:number = posConLLaves[i];
+          let nuevoValor:number = Math.abs(valor - 26);
+          posConLLaves[i] = nuevoValor;
+        }
+      }
+      //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
+      let resCodificada:string[] = [];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        resCodificada[i] = this.l[posConLLaves[i]];
+      }
+      let mensajeC:string = '';
+      for (let i = 0; i < resCodificada.length; i++) {
+        mensajeC = mensajeC + resCodificada[i];
+      }
+      this.mensajeCifrado = mensajeC;
+      this.claveMensaje = true;
+      this.btnEscoger = false;
+      this.botonesCD = true; 
     }
-    //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
-    let resCodificada:string[] = [];
-    for (let i = 0; i < mensajeVec.length; i++) {
-      resCodificada[i] = this.l[posConLLaves[i]];
-    }
-    let mensajeC:string = '';
-    for (let i = 0; i < resCodificada.length; i++) {
-      mensajeC = mensajeC + resCodificada[i];
-    }
-    this.mensajeCifrado = mensajeC;
   }
 
   decodificar():void{
-    let vecLlave:string[]=this.claveIngresada.toString().split(',');
-    let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
-    let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
-    //Generamos el mensaje cifrado
-    //obtenemos las posiciones de las letras en el abecedario
-    let posicionesL:number[] =[];
-    for (let i = 0; i < mensajeVec.length; i++) {
-      for (let j = 0; j < this.l.length; j++) {
-        if(mensajeVec[i] === this.l[j]){
-          posicionesL.push(j);
+    if(this.claveIngresada===undefined || this.claveIngresada === '' || this.mensajeIngresado === undefined || this.mensajeIngresado === ''){
+      alert('Debes ingresar una clave y un mensaje...');
+    }else{
+      let vecLlave:string[]=this.claveIngresada.toString().split(',');
+      let mensajeVec:string[] = this.mensajeIngresado.toString().split('');
+      let vecLlaveRes:number[] = this.generarVectorLlaveLetras(vecLlave,mensajeVec);
+      //Generamos el mensaje cifrado
+      //obtenemos las posiciones de las letras en el abecedario
+      let posicionesL:number[] =[];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        for (let j = 0; j < this.l.length; j++) {
+          if(mensajeVec[i] === this.l[j]){
+            posicionesL.push(j);
+          }
         }
       }
-    }
-    let posConLLaves:number[] = [];
-    for (let i = 0; i < posicionesL.length; i++) {
-      posConLLaves[i] = posicionesL[i] - vecLlaveRes[i];
-    }
-    //Comprobamos que los resultados tengan un valor logico es decir menor a 26
-    for (let i = 0; i < posConLLaves.length; i++) {
-      if(posConLLaves[i] < 0){
-        let valor:number = posConLLaves[i];
-        let nuevoValor:number = Math.abs(valor + 26);
-        posConLLaves[i] = nuevoValor;
+      let posConLLaves:number[] = [];
+      for (let i = 0; i < posicionesL.length; i++) {
+        posConLLaves[i] = posicionesL[i] - vecLlaveRes[i];
       }
+      //Comprobamos que los resultados tengan un valor logico es decir menor a 26
+      for (let i = 0; i < posConLLaves.length; i++) {
+        if(posConLLaves[i] < 0){
+          let valor:number = posConLLaves[i];
+          let nuevoValor:number = Math.abs(valor + 26);
+          posConLLaves[i] = nuevoValor;
+        }
+      }
+      //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
+      let resCodificada:string[] = [];
+      for (let i = 0; i < mensajeVec.length; i++) {
+        resCodificada[i] = this.abecedario[posConLLaves[i]];
+      }
+      let mensajeC:string = '';
+      for (let i = 0; i < resCodificada.length; i++) {
+        mensajeC = mensajeC + resCodificada[i];
+      }
+      this.mensajeDescifrado = mensajeC;
+      this.claveMensaje = true;
+      this.btnEscoger = false;
+      this.botonesCD = true; 
     }
-    //Ya con las posiciones nuevas procedemos a traer nuestro mensaje codificado
-    let resCodificada:string[] = [];
-    for (let i = 0; i < mensajeVec.length; i++) {
-      resCodificada[i] = this.abecedario[posConLLaves[i]];
-    }
-    let mensajeC:string = '';
-    for (let i = 0; i < resCodificada.length; i++) {
-      mensajeC = mensajeC + resCodificada[i];
-    }
-    this.mensajeDescifrado = mensajeC;
   }
 
   generarVectorLlaveLetras(vecLlave:string[], vecMensaje:string[]):number[]{
@@ -189,5 +222,9 @@ export class Ejercicio2Component implements OnInit {
       }
     }
     return vecResultado;
+  }
+  escogerN():void{
+    this.claveMensaje = false;
+    this.botonesCD = false;
   }
 }
