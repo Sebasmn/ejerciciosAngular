@@ -1,18 +1,32 @@
 <div class="page-header text-center bg-info text-uppercase">
-    <h1>Anagramas</h1>
+    <h1>Multiplicación Arábiga</h1>
 </div>
 
 <div class="container mt-4">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-2">
         
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <div class="d-flex justify-content-center">
-                <input placeholder="Ingrese palabra" pattern="[A-Za-z]{1,15}" [disabled]="palabraActivar" class="form-control text-center" [(ngModel)]="palabra" onKeypress="if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122)) event.returnValue = false;">      
+                <input placeholder="Numero 1" class="form-control text-center" [disabled]="celdas" type="number" [(ngModel)]="num1">        
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
+        
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-sm-2">
+        
+        </div>
+        <div class="col-sm-8">
+            <div class="d-flex justify-content-center">
+                <input placeholder="Numero 2" class="form-control text-center" [disabled]="celdas" type="number" [(ngModel)]="num2">        
+            </div>
+        </div>
+        <div class="col-sm-2">
         
         </div>
     </div>
@@ -26,11 +40,11 @@
                 
                 <div class="row">
                     <div class="col-sm-6">
-                        <button class="btn btn-info btn-sm" (click)="buscar()" [disabled] = "btnBuscar">Buscar anagramas</button> 
+                        <button class="btn btn-info btn-sm" (click)="obtenerDatos()">Obtener datos</button> 
                     </div>
                     
                     <div class="col-sm-6">
-                        <button class="btn btn-info btn-sm" (click)="restablecer()" [disabled] = "btnReiniciar">Reiniciar</button> 
+                        <button class="btn btn-info btn-sm" (click)="calcular()">Calcular</button> 
                     </div>
 
                 </div>
@@ -41,20 +55,4 @@
 
         </div>
     </div>
-    <br/>
-    <div class="row"> 
-        <div class="col-sm-4">  
-
-        </div>
-        <div class="col-sm-4">  
-            <label>Anagramas encontrados: </label>
-            <br/><br/>
-            <textarea class="form-control" rows="10" [disabled]="habilitar" [(ngModel)]="anagramasR"></textarea>
-        </div>
-        <div class="col-sm-4">  
-
-        </div>
-        
-      </div> 
-      <br/><br/>
 </div>

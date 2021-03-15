@@ -9,25 +9,24 @@ import { switchMap } from 'rxjs/operators';
 })
 export class Ejercicio4Component implements OnInit {
 
-  habilitar:boolean = true;
-  palabra:string = '';
-  palabras:string = '';
-  anagramasR:string = '';
-  permutaciones:string[] = [];
-  sinRepetidos:string[] = [];
-  palabraActivar:boolean = false;
-  btnBuscar:boolean = false;
-  btnReiniciar:boolean = true;
+ 
+  constructor(private http: HttpClient) {
+    
+  }
 
-  constructor(private http: HttpClient) { }
+  celdas:boolean = true;
+  datos:string = '';
+  num1:string = '';
+  num2:string = '';
+  
 
   ngOnInit(): void {
     this.obtenerInformacionArchivo()
-      .subscribe(response => this.palabras = response);
+      .subscribe(response => this.datos = response);
   }
 
   obtenerInformacionArchivo() {
-    return this.http.get('/assets/rutaarchivopalabras.json')
+    return this.http.get('/assets/rutaarchivo.json')
       .pipe(
         switchMap((response: any) => this.http.get(response.pathToFile, {
           responseType: 'text'
@@ -35,90 +34,37 @@ export class Ejercicio4Component implements OnInit {
       );
   }
 
-  buscar():void{
-    this.anagramasR = '';
-    this.sinRepetidos = [];
-    if(this.palabra === undefined || this.palabra === ''){
-      alert('Ingrese una palabra...');
-    }else{
-      this.permutaciones = this.permutar(this.palabra.toLowerCase());
-       //obtenemos los datos y almacenamos en un vector
-       let palabrasSinSepVec:string[]=this.palabras.toString().split('\n');
-       //Comparamos las permutaciones con nuestro diccionario
-       let anagramasEncontrados:string[] =[];
-       let cont:number = 0;
-       for (let i = 0; i < this.permutaciones.length; i++) {
-         let existe:boolean = palabrasSinSepVec.includes(this.permutaciones[i]);
-         if(existe === true){
-           anagramasEncontrados[cont] = this.permutaciones[i];
-           cont++;
-         }
-       }
-       if(cont === 0){
-        alert('No hay anagramas que mostrar');
-        this.palabra = '';
-       }else{
-         //eliminamos anagramas repetidos
-        for(var i = 0; i < anagramasEncontrados.length; i++) {         
-          if (!this.sinRepetidos.includes(anagramasEncontrados[i])) {
-            this.sinRepetidos.push(anagramasEncontrados[i]);
-          }
-        }
-        //Enviamos el resultado
-        let resultadoTA:string = '';
-        for (let i = 0; i < this.sinRepetidos.length; i++) {
-          resultadoTA = resultadoTA + this.sinRepetidos[i] + '\n';
-        }
-        this.anagramasR = resultadoTA;
-        this.palabraActivar = true;
-        this.btnBuscar = true;
-        this.btnReiniciar = false;
-       }
+  imprimir():void{
+    //obtenemos los satos y almacenamos en un vector
+    let datosVec:string[]=this.datos.toString().split('\n');
+    //separamos dichos datos en vectores diferentes
+    let primerNum:string[] = datosVec[0].toString().split('');
+    let segundoNum:string[] = datosVec[1].toString().split('');
+    //Corregimos los vectores
+    let primerNumN:string[] = [];
+    for (let i = 0; i < primerNum.length-1; i++) {
+      primerNumN[i] = primerNum[i];
     }
+    //concatenamos los vectores para mostrar los datos del txt
+    let primerNumCo:string = '';
+    let segundoNumCo:string = '';
+    for (let i = 0; i < primerNumN.length; i++) {
+      primerNumCo = primerNumCo + primerNumN[i];
+    }
+    for (let i = 0; i < segundoNum.length; i++) {
+      segundoNumCo = segundoNumCo + segundoNum[i];
+    }
+    this.num1 = primerNumCo;
+    this.num2 = segundoNumCo;
+  }
+
+  obtenerDatos():void{
+    this.imprimir();
+  }
+
+  calcular():void{
     
-  }
-  
-  intercambiar(caracteres:string[],i:number,j:number):void{
-    let aux:string = caracteres[i];
-    caracteres[i] = caracteres[j];
-    caracteres[j] = aux;
-  }
 
-  permutar(palabra:string):string[]{
-    let cont:number[] = []; 
-    let anagramas:string[] = []; 
-    let caracteres:string[]= palabra.toString().split('');
-    let caracLon:number = caracteres.length;
-    let i:number = 0;
-  
-    for (let i = 0; i < caracLon; i++) {
-      cont[i] = 0;   
-    }
-    if(caracteres.length > 8){
-
-    }else{
-      while(i < caracLon){
-        if(cont[i] < i){
-          this.intercambiar(caracteres, i%2 === 1 ? cont[i] : 0, i);
-          cont[i]++;
-          i = 0;
-          anagramas.push(caracteres.join('').toLowerCase());
-        }else{
-          cont[i] = 0;
-          i++;
-        }
-      }
-    }
-
-    return anagramas;
-  }
-
-  restablecer():void{
-    this.anagramasR = '';
-    this.sinRepetidos = [];
-    this.palabra = '';
-    this.palabraActivar = false;
-    this.btnBuscar = false;
-    this.btnReiniciar = true;
+    //
   }
 }

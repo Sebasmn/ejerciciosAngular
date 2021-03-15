@@ -1,59 +1,113 @@
 <div class="page-header text-center bg-info text-uppercase">
-    <h1>División a mano</h1>
-  </div>
+  <h1>Ordenamiento de fracciones (Quicksort)</h1>
+</div>
 
 <div class="container mt-4">
-    <div class="row">
-      <div class="col-sm-3">
-      </div>  
-      <div class="col-sm-2 mb-2">
-        <input placeholder="Ingrese numerador" class="form-control" maxlength="50" type="number" [(ngModel)]="numerador">  
-      </div>
-      <div class="col-md-1" style="background-color: black; width: 1px;">
-      </div>
-      <div class="col-sm-2">
-        <input placeholder="Ingrese denominador" class="form-control" maxlength="150" type="number" [(ngModel)]="denominador">
-      </div> 
-      <div class="col-sm-1">
-        <button class="btn btn-info btn-sm" (click)="dividir()">Dividir</button>
-      </div> 
+  <div class="row">
       <div class="col-sm-4">
-      </div> 
-    </div>
-    
-    <div class="row">
-      <div class="col-md-3">
-      </div>  
-      <div class="col-md-2">
+      
       </div>
-      <div class="col-md-1" style="background-color: black; width: 1px;">
+      <div class="col-sm-4">
+          <div class="d-flex justify-content-center">
+              <input placeholder="Ingrese # fracciones" class="form-control text-center" type="number" [(ngModel)]="nFracciones" [disabled]="numeroFrac">      
+          </div>
       </div>
-      <div class="col-md-2" style="background-color: black; height: 15px;">
-      </div> 
-      <div class="col-md-1">
+      <div class="col-sm-4">
+      
       </div>
-      <div class="col-md-4">
-      </div> 
-    </div>
-   
-    <div class="row">
-      <div class="col-md-3">
-      </div>  
-      <div class="col-md-2">
-        <div class="container mt-2">
-          <textarea class="form-control" rows="10"></textarea>
-        </div>
-      </div>
-      <div class="col-md-1" style="background-color: black; width: 1px;">
-      </div>
-      <div class="col-md-2">
-        <div class="container mt-2">
-          <textarea class="form-control" rows="10"></textarea>
-        </div>
-      </div> 
-      <div class="col-md-1">
-      </div>
-      <div class="col-md-4">
-      </div> 
-    </div>
   </div>
+  <br/>
+  <div class="row">
+      <div class="col-sm-4">
+      
+      </div>
+      <div class="col-sm-4">  
+          <div class="d-flex justify-content-center">
+              
+            <div class="row">
+              <div class="col-sm-6">
+                  <button class="btn btn-info btn-sm" (click)="comprobar()" [disabled] = "btnAceptar">Aceptar</button> 
+              </div>
+              
+              <div class="col-sm-6">
+                  <button class="btn btn-info btn-sm" (click)="reiniciar()" [disabled] = "btnReiniciar">Reiniciar</button> 
+              </div>
+
+          </div>
+               
+          </div>
+      </div>
+      <div class="col-sm-4">  
+
+      </div>
+  </div>
+  <br/>
+    
+    <div class="row" *ngFor="let item of ingresados; let i = index"> 
+        <div class="col-sm-4">  
+            <div class="row">
+                <div class="col-sm-8">
+
+                </div>
+                <div class="col-sm-4">
+                    <p class="text-right">Ingrese fracción {{i+1}}: </p>
+                </div>
+            </div>
+           
+        </div>
+        <div class="col-sm-4">  
+            <div class="d-flex justify-content-center">
+                <input type="text" class="form-control text-center" [(ngModel)]="datosIngresados[i]">
+            </div>
+        </div>
+        <div class="col-sm-4">  
+
+        </div>
+      </div>
+  <br/>
+  <div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-info btn-sm" (click)="ordenar()" [disabled]="btnOrdenar">Ordenar</button>
+        </div>
+    </div> 
+</div>
+<br/>
+  <div class="row"> 
+      <div class="col-sm-4">  
+<h1>{{datosIngresados[0]}}</h1>
+<h1>{{datosIngresados[1]}}</h1>
+<h1>{{datosIngresados[2]}}</h1>
+<h1>{{datosIngresados[3]}}</h1>
+<h1>{{datosIngresados[4]}}</h1>
+<h1>{{datosIngresados[5]}}</h1>
+      </div>
+      <div class="col-sm-4">  
+          <label>Fracciones ordenadas: </label>
+          <br/><br/>
+          <textarea class="form-control" rows="13" [disabled] = "textAreaH"></textarea>
+      </div>
+      <div class="col-sm-4">  
+
+      </div>
+      
+  </div> 
+  <br/><br/>
+  <div class="row">
+      <div class="col-sm-4 text-right">
+
+      </div>
+      <div class="col-sm-4">
+        <label>Sumatoria total:</label>
+        <br/><br/>
+          <div class="d-flex justify-content-center">
+              <input placeholder="Sumatoria" class="form-control text-center" type="number" [disabled]="resSumatoria">      
+          </div>
+      </div>
+      <div class="col-sm-4">
+      
+      </div>
+  </div>
+  <br/>
+  <br/>
+</div>
