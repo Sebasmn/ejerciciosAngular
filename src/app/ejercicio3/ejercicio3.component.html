@@ -9,7 +9,7 @@
       </div>
       <div class="col-sm-4">
           <div class="d-flex justify-content-center">
-              <input placeholder="Ingrese # fracciones" class="form-control text-center" type="number" [(ngModel)]="nFracciones" [disabled]="numeroFrac">      
+              <input placeholder="Ingrese # fracciones" class="form-control text-center" maxlength="2" [(ngModel)]="nFracciones" [disabled]="numeroFrac" onKeypress="if ((event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;">      
           </div>
       </div>
       <div class="col-sm-4">
@@ -49,16 +49,27 @@
                 <div class="col-sm-8">
 
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4"  style="padding-top: 10px; padding-left: 18px;">
                     <p class="text-right">Ingrese fracción {{i+1}}: </p>
                 </div>
             </div>
            
         </div>
         <div class="col-sm-4">  
-            <div class="d-flex justify-content-center">
-                <input type="text" class="form-control text-center" [(ngModel)]="datosIngresados[i]">
-            </div>
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control text-center" type="number" [disabled]="txtFraccion" [(ngModel)]="datosIngresadosN[i]">
+                        </div>
+                        <div class="col-sm-1" style="padding-top: 10px; padding-left: 14px;">
+                            /
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control text-center" type="number" [disabled]="txtFraccion" [(ngModel)]="datosIngresadosD[i]" onKeypress="if ((event.keyCode < 48 || event.keyCode > 57)) event.returnValue = false;">
+                        </div>
+                    </div>
+                    
+                </div>
         </div>
         <div class="col-sm-4">  
 
@@ -68,24 +79,19 @@
   <div class="row">
     <div class="col-md-12">
         <div class="d-flex justify-content-center">
-            <button class="btn btn-info btn-sm" (click)="ordenar()" [disabled]="btnOrdenar">Ordenar</button>
+            <button class="btn btn-info btn-sm" (click)="ordenarFrac()" [disabled]="btnOrdenar">Ordenar</button>
         </div>
     </div> 
 </div>
 <br/>
   <div class="row"> 
       <div class="col-sm-4">  
-<h1>{{datosIngresados[0]}}</h1>
-<h1>{{datosIngresados[1]}}</h1>
-<h1>{{datosIngresados[2]}}</h1>
-<h1>{{datosIngresados[3]}}</h1>
-<h1>{{datosIngresados[4]}}</h1>
-<h1>{{datosIngresados[5]}}</h1>
+
       </div>
       <div class="col-sm-4">  
           <label>Fracciones ordenadas: </label>
           <br/><br/>
-          <textarea class="form-control" rows="13" [disabled] = "textAreaH"></textarea>
+          <textarea class="form-control" rows="13" [disabled] = "textAreaH" [(ngModel)]="textArea"></textarea>
       </div>
       <div class="col-sm-4">  
 
@@ -101,7 +107,7 @@
         <label>Sumatoria total:</label>
         <br/><br/>
           <div class="d-flex justify-content-center">
-              <input placeholder="Sumatoria" class="form-control text-center" type="number" [disabled]="resSumatoria">      
+              <input placeholder="Sumatoria" class="form-control text-center" [disabled]="resSumatoria" [(ngModel)]="sumatoriaR">      
           </div>
       </div>
       <div class="col-sm-4">

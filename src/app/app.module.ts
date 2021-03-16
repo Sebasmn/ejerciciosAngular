@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { BannerComponent } from './banner/banner.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MenuComponent } from './menu/menu.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     Ejercicio2Component,
     Ejercicio3Component,
     Ejercicio4Component,
-    BannerComponent
+    BannerComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

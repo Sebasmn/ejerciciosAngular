@@ -8,6 +8,10 @@ import {Ejercicio4Component} from './ejercicio4/ejercicio4.component';
 const routes: Routes = [
   {
     component:Ejercicio1Component,
+    path:''
+  },
+  {
+    component:Ejercicio1Component,
     path:'ejercicio1'
   },
   {
