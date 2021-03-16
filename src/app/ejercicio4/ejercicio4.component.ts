@@ -14,11 +14,12 @@ export class Ejercicio4Component implements OnInit {
     
   }
 
-  celdas:boolean = true;
   datos:string = '';
-  num1:string = '';
-  num2:string = '';
-  
+  txtArea:boolean = true;
+  impreso:string = '';
+  numOracionesS:string = '';
+  numOraciones:number = 0;
+  abecedario:string[]=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
   ngOnInit(): void {
     this.obtenerInformacionArchivo()
@@ -33,38 +34,17 @@ export class Ejercicio4Component implements OnInit {
         }))
       );
   }
-
-  imprimir():void{
-    //obtenemos los satos y almacenamos en un vector
-    let datosVec:string[]=this.datos.toString().split('\n');
-    //separamos dichos datos en vectores diferentes
-    let primerNum:string[] = datosVec[0].toString().split('');
-    let segundoNum:string[] = datosVec[1].toString().split('');
-    //Corregimos los vectores
-    let primerNumN:string[] = [];
-    for (let i = 0; i < primerNum.length-1; i++) {
-      primerNumN[i] = primerNum[i];
-    }
-    //concatenamos los vectores para mostrar los datos del txt
-    let primerNumCo:string = '';
-    let segundoNumCo:string = '';
-    for (let i = 0; i < primerNumN.length; i++) {
-      primerNumCo = primerNumCo + primerNumN[i];
-    }
-    for (let i = 0; i < segundoNum.length; i++) {
-      segundoNumCo = segundoNumCo + segundoNum[i];
-    }
-    this.num1 = primerNumCo;
-    this.num2 = segundoNumCo;
+  visualizar():void{
+    this.impreso = this.datos;
+    let todosDatos:string[]=this.datos.toString().split('\n');
+    this.numOracionesS = todosDatos[0];
+    this.numOraciones = Number(todosDatos[0]);
+    let cadena:string = "Jove xef, porti whisky amb quinze glaçons d'hidrogen";
+    let resultado = cadena.replace(/[^a-zA-Z á-ü \d{4}]/g, '');
+    let resultadoNormalizado:string = resultado.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    let resultadoSinEspacios:string = resultadoNormalizado.replace(/\s+/g, '');
+    let resultadoCompleto:string = resultadoSinEspacios.toLowerCase();
+    console.log(resultadoCompleto.length + ' ' + resultadoCompleto);
   }
 
-  obtenerDatos():void{
-    this.imprimir();
-  }
-
-  calcular():void{
-    
-
-    //
-  }
 }
