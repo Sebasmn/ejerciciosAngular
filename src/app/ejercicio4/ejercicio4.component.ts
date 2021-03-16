@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 import { switchMap } from 'rxjs/operators';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-ejercicio4',
@@ -24,6 +25,8 @@ export class Ejercicio4Component implements OnInit {
   abecedario:string[]=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
   vecResLim:string[] = [];
   datosNormalizados:string[] = [];
+  btnReiniciar:boolean = true;
+  todosDatos:string[] = [];
 
   ngOnInit(): void {
     this.obtenerInformacionArchivo()
@@ -38,19 +41,30 @@ export class Ejercicio4Component implements OnInit {
         }))
       );
   }
+
+  reiniciarD():void{
+    this.btnVisualizar = false;
+    this.btnReiniciar = true;
+    this.impreso = '';
+    this.numOracionesS = '';
+    this.datosNormalizados = [];
+    this.vecResLim = [];
+  }
+
   visualizar():void{
     //Obtenemos la cantidad de oraciones que debe existir en el txt
-    let todosDatos:string[]=this.datos.toString().split('\n');
-    this.numOracionesS = todosDatos[0];
-    this.numOraciones = Number(todosDatos[0]);
+    this.todosDatos=this.datos.toString().split('\n');
+    this.numOracionesS = this.todosDatos[0];
+    let numOraciones:number = Number(this.todosDatos[0]);
    
     //Normalizamos los datos ingresados en nuestro txt 
     //tomando los valores desde la segunda línea
-    for (let i = 1; i < todosDatos.length; i++) {
-      let resultado = todosDatos[i].replace(/[^a-zA-Z á-ü \d{4}]/g, '');
+    for (let i = 1; i < this.todosDatos.length; i++) {
+      let resultado = this.todosDatos[i].replace(/[^a-zA-Z á-ü]/g, '');
       let resultadoNormalizado:string = resultado.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       let resultadoSinEspacios:string = resultadoNormalizado.replace(/\s+/g, '');
-      let resultadoCompleto:string = resultadoSinEspacios.toLowerCase();
+      let resultadoSinNumeros:string = resultadoSinEspacios.replace(/[0-9]+/g, '');
+      let resultadoCompleto:string = resultadoSinNumeros.toLowerCase();
       this.datosNormalizados.push(resultadoCompleto);
     }
     
@@ -60,7 +74,7 @@ export class Ejercicio4Component implements OnInit {
       let resultadoLimitado:string = this.datosNormalizados[i].substring(0, longitud);
       this.vecResLim.push(resultadoLimitado);
     }
-    if(this.numOraciones !== this.vecResLim.length){
+    if(numOraciones !== this.vecResLim.length){
       alert('Número de oraciones no es igual que las oraciones instanciadas en el txt');
     }else{
       this.btnResultado = false;
@@ -100,9 +114,21 @@ export class Ejercicio4Component implements OnInit {
     for (let i = 0; i < this.vecResLim.length; i++) {
       vecLon[i] = this.vecResLim[i].length;
     }
-    //Imprimimos resultados
+    //Unimos los resultados
+    let vecResCompleto:string[] = [];
     for (let i = 0; i < vecSiNo.length; i++) {
-      console.log(vecSiNo[i] + '    ' + vecLon[i]);
+      vecResCompleto.push(vecSiNo[i] + '    ' + vecLon[i]);
     }
+    let cadena:string = '';
+    for (let i = 0; i < vecResCompleto.length; i++) {
+      cadena = cadena + vecResCompleto[i] + '\n';     
+    }
+    //Generamos nuestro documento exportado
+
+    let blob = new Blob([cadena], {type: "text/plain;charset=utf-8"});
+    fileSaver.saveAs(blob, "SOLUCION.txt");
+
+    this.btnResultado = true;
+    this.btnReiniciar = false;
   }
 }
